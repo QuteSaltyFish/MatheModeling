@@ -38,6 +38,7 @@ classdef SmallGraph
             global c;
             global d;
             global ends;
+            global sms;
             State_map_new = obj.State_map;
             Person_map_new = obj.Person_map;
             Move_map_new = obj.Move_map;

@@ -1,7 +1,7 @@
 clc, clear;
 %%
 %Create a unDirected Graph
-s = [1,1,2,6,7]; t = [2,3,3,4,2]; w = [5,6,7,9,6];
+s = [1,1,2,3,4,5]; t = [2,3,3,4,5,6]; w = [5,6,7,8,9,10];
 global c;
 c = graph(s,t,w);
 plot(c);

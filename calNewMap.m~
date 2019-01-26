@@ -1,13 +1,43 @@
-function [State_map_new, Person_map_new, Move_map_new, u, v,time] = calNewMap(obj,State_map_new, Person_map_new, Move_map_new,u,v,dir,time)
+function [State_map_new, Person_map_new, Move_map_new, u, v,time] = calNewMap(obj,State_map_new, Person_map_new, Move_map_new,u,v,dir,time,path)
 %CALNEWMAP Summary of this function goes here
 %   Detailed explanation goes here
-    if v==1
-        time = 0;
-    elseif v==obj.Col
-        time = 0;
+    global sms;
+    global c;
+    global d;
+    global ends;
+    if v==1 && dir == -1
+        if path(2) ~= []
+            nextedge = sms(findedge(c,path(1),path(2)));
+            if nextedge.LeftNode == path(1)
+                if
+                    sum(nextedge.State_map(:,1)==0)~=0;
+                    time = time -1;
+                    if (sum(nextedge.Move_map(:,v+dir))==dir < nextedge.Row-1)
+                        [m,n] = find(nextedge.State_map(:,v+dir)==0,1);
+                        nextedge.State_map(m,1) = 1;
+                        State_map_new(u,v) = 0;
+                        nextedge.Person_map_new{m,1} = Person_map_new{u,v};
+                        Person_map_new{u,v} = [];
+                        nextedge.Move_map_new(m,1) = dir;
+                        Move_map_new(u,v) = 0;
+                        u = m;
+                        v = 1;
+                        
+                        [obj,obj.State_map,obj.Person_map,obj.Move_map,u,v,time] = calNewMap(obj,obj.State_map,obj.Person_map,obj.Move_map,u,v,dir,time,path(:,2:end))
+            end
+                end
+            end
+        end
+        
+            
+    elseif v==obj.Col && dir ==1
+        if path(2) ~= []
+            nextedge = sms(findedge(c,path(1),path(2)));
+        end
+        
     else
         %if there is a empty spot and there can add a new stream.
-        if sum(Sr(:,v+dir)==0)~=0
+        if sum(State_map_new(:,v+dir)==0)~=0
             time = time -1;
             if (sum(obj.Move_map(:,v+dir))==dir < obj.Row-1)
                 [m,n] = find(State_map_new(:,v+dir)==0,1);
@@ -21,9 +51,12 @@ function [State_map_new, Person_map_new, Move_map_new, u, v,time] = calNewMap(ob
                 v = v+dir;
             end
 
-        elseif sum(obj.Move_map(:,v)==0)==0
+        elseif sum(State_map_new(:,v)==0)==0
             [State_map_new,Person_map_new,Move_map_new,u,v,time] = calNewMap(obj,State_map_new,Person_map_new,Move_map_new,u,v,-dir,time);
+        else
+            time = time-1;
         end
+        
 
     end
 end

@@ -1,9 +1,7 @@
 clc, clear;
-s = [1,1,2]; t = [2,3,3]; w = [1,2,3];
+s = [1,1,2,3,4,5]; t = [2,3,3,4,5,6]; w = [1,2,3,4,5,6];
 c = graph(s,t,w);
 plot(c);
-c = addnode(c,1);
-c = addedge(c,3,4,4);
 edge = c.Edges;
 edge{1,1}(1,1), edge(1,2)
 h = plot(c);
