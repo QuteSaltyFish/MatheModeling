@@ -70,11 +70,10 @@ classdef SmallGraph
                             % colorbar();
                             % pause(0.2);
                         end
-%                         [l,m] = size(sms);
-%                         for n = 1:m
-%                             sms{1,n}.show();
-%                         end
-                        disp(Move_map_new);
+                        [l,m] = size(sms);
+                        for n = 1:m
+                            sms{1,n}.show();
+                        end
                         %%
                     end
                 end
