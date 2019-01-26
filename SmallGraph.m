@@ -36,31 +36,15 @@ classdef SmallGraph
                     if obj.State_map(i,j)==1 %if there is a node
                         %%
                         %move the node
-                        if j==1
-
-                        elseif j==obj.Col
-
-                        else
-                            dir = -1;
-                            u = i;
-                            v = j;
-                            for k = 0:(obj.Person_map{u,v}.velocity)
-                                if sum(obj.State_map(:,v+dir)==0)~=0
-                                    [m,n] = find(obj.State_map(:,v+dir)==0,1);
-                                    State_map_new(m,v+dir) = 1;
-                                    State_map_new(u,v) = 0;
-                                    Person_map_new{m,v+dir} = obj.Person_map{u,v};
-                                    Person_map_new{u,v} = {};
-                                    u = m;
-                                    v = v+dir;
-                                end
-                            end
-                        end
+                        dir = 1;
+                        [State_map_new, Person_map_new] = calNewMap(obj,State_map_new,Person_map_new,i,j,dir);
 
                         %%
                     end
                 end
             end
+            obj.State_map = State_map_new;
+            obj.Person_map = Person_map_new;
         end
 
         function obj = move(obj, x, y, dir)
@@ -75,7 +59,7 @@ classdef SmallGraph
                         obj.State_map(m,y+dir) = 1;
                         obj.State_map(x,y) = 0;
                         obj.Person_map{m,y+dir} = obj.Person_map{x,y};
-                        obj.Person_map{x,y} = {};
+                        obj.Person_map{x,y} = [];
                     end
                 end
             end
