@@ -1,0 +1,22 @@
+clc, clear;
+%%
+%Create a unDirected Graph
+s = [1,1,2]; t = [2,3,3]; w = [1,2,3];
+c = graph(s,t,w);
+plot(c);
+edges = c.Edges{:,1};
+[row, col] = size(edges);
+sm = {};
+%%
+%use 
+for i = 1:row
+    sm{end+1}= SmallGraph(edges(i,1),edges(i,2),5,5);
+end
+
+
+for i = 1:row
+    sm{1,i} = sm{1,i}.loop();
+    sm{1,i}.show();
+end
+%%
+% sm.Person_map{2,2}.velocity
