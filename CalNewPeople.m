@@ -1,4 +1,4 @@
-function time =  CalNewPeople(index,time, dir)
+function time =  CalNewPeople(ix,time, dir)
     global allpeople;
     global sms;
     global path;
@@ -6,11 +6,10 @@ function time =  CalNewPeople(index,time, dir)
     global edgepath;
     global distance;
     [~,b] = size(path);
-    GraphIndex = allpeople{1,index}.position(1,3);
+    GraphIndex = allpeople{1,ix}.position(1,3);
     obj = sms{1,GraphIndex};
-    u = allpeople{1,index}.position(1,1);
-    v = allpeople{1,index}.position(1,2);
-    
+    u = allpeople{1,ix}.position(1,1);
+    v = allpeople{1,ix}.position(1,2);
     if v==1 && dir == -1 %在图最左边，且前往下一张图
         time = time -1;
         %是终点
@@ -19,10 +18,11 @@ function time =  CalNewPeople(index,time, dir)
                 time = 0;
                 obj.State_map(u,v) = 0;
                 obj.Move_map(u,v) = 0;
-%                 obj.Person_map{u,v} = [];
-                allpeople{1,index} = [];
+%                  obj.Person_map{u,v} = [];
+                allpeople{1,ix} = [];
                 peoplecount = peoplecount - 1
-                distance(index)=0;
+                distance(1,ix)=0;
+                obj.vol = obj.vol - 1;
             end
 
         %不是终点
@@ -36,12 +36,14 @@ function time =  CalNewPeople(index,time, dir)
                         obj.State_map(u,v) = 0;
 %                         nextedge.Person_map{m,1} = obj.Person_map{u,v};
 %                         obj.Person_map{u,v} = [];
+                        nextedge.vol = nextedge.vol + 1;
+                        obj.vol = obj.vol - 1;
                         nextedge.Move_map(m,1) = -dir;
                         obj.Move_map(u,v) = 0;
-                        allpeople{1,index}.position(1,1) = m;
-                        allpeople{1,index}.position(1,2) = 1;
-                        allpeople{1,index}.position(1,3) = nextedge.index;
-                        sms{nextedge.index} = nextedge;
+                        allpeople{1,ix}.position(1,1) = m;
+                        allpeople{1,ix}.position(1,2) = 1;
+                        allpeople{1,ix}.position(1,3) = nextedge.index;
+                        sms{1,nextedge.index} = nextedge;
                     end
                 end
             else
@@ -54,10 +56,12 @@ function time =  CalNewPeople(index,time, dir)
 %                         obj.Person_map{u,v} = [];
                         nextedge.Move_map(m,nextedge.Col) = dir;
                         obj.Move_map(u,v) = 0;
-                        allpeople{1,index}.position(1,1) = m;
-                        allpeople{1,index}.position(1,2) = nextedge.Col;
-                        allpeople{1,index}.position(1,3) = nextedge.index;
-                        sms{nextedge.index} = nextedge;
+                        nextedge.vol = nextedge.vol + 1;
+                        obj.vol = obj.vol - 1;
+                        allpeople{1,ix}.position(1,1) = m;
+                        allpeople{1,ix}.position(1,2) = nextedge.Col;
+                        allpeople{1,ix}.position(1,3) = nextedge.index;
+                        sms{1,nextedge.index} = nextedge;
                     end
                 end
             end
@@ -73,9 +77,10 @@ function time =  CalNewPeople(index,time, dir)
                 obj.State_map(u,v) = 0;
                 obj.Move_map(u,v) = 0;
 %                 obj.Person_map{u,v} = [];
-                allpeople{1,index} = [];
+                allpeople{1,ix} = [];
                 peoplecount = peoplecount - 1
-                distance(index)=0;
+                distance(1,ix)=0;
+                obj.vol = obj.vol - 1;
             end
         %不是终点
         elseif b >= 2
@@ -90,10 +95,12 @@ function time =  CalNewPeople(index,time, dir)
 %                         obj.Person_map{u,v} = [];
                         nextedge.Move_map(m,1) = dir;
                         obj.Move_map(u,v) = 0;
-                        allpeople{1,index}.position(1,1) = m;
-                        allpeople{1,index}.position(1,2) = 1;
-                        allpeople{1,index}.position(1,3) = nextedge.index;
-                        sms{nextedge.index} = nextedge;
+                        nextedge.vol = nextedge.vol + 1;
+                        obj.vol = obj.vol - 1;
+                        allpeople{1,ix}.position(1,1) = m;
+                        allpeople{1,ix}.position(1,2) = 1;
+                        allpeople{1,ix}.position(1,3) = nextedge.index;
+                        sms{1,nextedge.index} = nextedge;
                     end
                 end
             else
@@ -106,10 +113,12 @@ function time =  CalNewPeople(index,time, dir)
 %                         obj.Person_map{u,v} = [];
                         nextedge.Move_map(m,nextedge.Col) = -dir;
                         obj.Move_map(u,v) = 0;
-                        allpeople{1,index}.position(1,1) = m;
-                        allpeople{1,index}.position(1,2) = 1;
-                        allpeople{1,index}.position(1,3) = nextedge.index;
-                        sms{nextedge.index} = nextedge;
+                        nextedge.vol = nextedge.vol + 1;
+                        obj.vol = obj.vol - 1;
+                        allpeople{1,ix}.position(1,1) = m;
+                        allpeople{1,ix}.position(1,2) = nextedge.Col;
+                        allpeople{1,ix}.position(1,3) = nextedge.index;
+                        sms{1,nextedge.index} = nextedge;
                     end
                 end
             end
@@ -126,14 +135,14 @@ function time =  CalNewPeople(index,time, dir)
 %                 obj.Person_map{u,v} = [];
                 obj.Move_map(m,v+dir) = dir;
                 obj.Move_map(u,v) = 0;
-                allpeople{1,index}.position(1,1) = m;
-                allpeople{1,index}.position(1,2) = v+dir;
+                allpeople{1,ix}.position(1,1) = m;
+                allpeople{1,ix}.position(1,2) = v+dir;
             else 
                 % obj.Move_map(u,v) = dir;
             end
 
-        elseif sum(obj.State_map(:,v)==0)==0 && dir~=obj.Move_map(u,v)
-            time = CalNewPeople(index,time, -dir);
+%         elseif sum(obj.State_map(:,v)==0)==0 && dir~=obj.Move_map(u,v)
+%             time = CalNewPeople(index,time, -dir);
         else
             time = 0;
             % obj.Move_map(u,v) = dir;

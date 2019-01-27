@@ -1,23 +1,12 @@
-classdef B
-    %B Summary of this class goes here
-    %   Detailed explanation goes here
-    
-    properties
-        data;
-    end
-    
-    methods
-        function obj = B()
-            %B Construct an instance of this class
-            %   Detailed explanation goes here
-            data = x
-        end
-        
-        function outputArg = method1(obj,inputArg)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
-            outputArg = obj.Property1 + inputArg;
-        end
-    end
+global sms;
+for i =1:peoplecount
+	id = cellfun('length',allpeople);
+	if id(1,i)~=0
+		x =  allpeople{1,i}.position(1,1);
+		y =  allpeople{1,i}.position(1,2);
+		z =  allpeople{1,i}.position(1,3);
+		if sms{1,z}.State_map(x,y)==0
+			fprintf("Wrong!\n");
+		end
+	end
 end
-

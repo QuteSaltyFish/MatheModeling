@@ -4,12 +4,14 @@ classdef SmallGraph
     properties
         LeftNode;
         RightNode;
+        area;
         Row;
         Col;
         index;
         State_map;
         Person_map;
         Move_map; %indicate last move
+        vol;
     end
     
     methods
@@ -19,11 +21,16 @@ classdef SmallGraph
             obj.Row = x;
             obj.Col = y;
             obj.index = index;
+            obj.area = x*y;
+            obj.vol = 0;
             obj.State_map = zeros(x, y);
             obj.Move_map = zeros(x,y);
             obj.Person_map = cell(x, y);
-            for i = 1:obj.Row-1
-                obj = obj.spawn(i, ceil(obj.Col/2));
+            for i = ceil(obj.Row*2/7):ceil(obj.Row*5/7)
+                for j = ceil(obj.Col*3/7):ceil(obj.Col*4/7)
+                    obj = obj.spawn(i, j);
+                end
+ 
             end
             % obj.show();
         end
@@ -31,10 +38,11 @@ classdef SmallGraph
         function obj = spawn(obj,x,y)
             global allpeople;
             global peoplecount;
+            obj.vol = obj.vol + 1;
             peoplecount = peoplecount+1;
-            obj.Person_map{x,y} = people(x,y,obj.index,200);
+            obj.Person_map{x,y} = people(x,y,obj.index, 1+(rand()<0.9), rand()<0.9, rand()<0.8);
             obj.State_map(x,y) = 1;
-            obj.Move_map(x,y) = +inf;
+            obj.Move_map(x,y) = 1;
             allpeople{1,peoplecount} = obj.Person_map{x,y};
             
         end
@@ -43,7 +51,6 @@ classdef SmallGraph
             global c;
             global d;
             global ends;
-            global sms;
             State_map_new = obj.State_map;
             Person_map_new = obj.Person_map;
             Move_map_new = obj.Move_map;
@@ -104,7 +111,7 @@ classdef SmallGraph
             else
                 for i = 0:(obj.Person_map{x,y}.velocity)
                     if sum(obj.State_map(:,y+dir)==0)~=0
-                        [m,n] = find(obj.State_map(:,y+dir)==0,1);
+                        [m,~] = find(obj.State_map(:,y+dir)==0,1);
                         obj.State_map(m,y+dir) = 1;
                         obj.State_map(x,y) = 0;
                         obj.Person_map{m,y+dir} = obj.Person_map{x,y};

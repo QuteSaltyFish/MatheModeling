@@ -10,10 +10,11 @@ classdef people
     end
     
     methods
-        function obj = people(x,y,z,v)
+        function obj = people(x,y,z,v,phone,foreign)
             %PEOPLE Construct an instance of this class
             %   Detailed explanation goes here
-            choice = [1,0,0];
+            obj.phone = phone;
+            obj.foreign = foreign;
             if nargin == 0
                 obj.position = [0,0,0];
                 obj.velocity = v;

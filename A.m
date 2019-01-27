@@ -1,25 +1,11 @@
-classdef A
-    %A Summary of this class goes here
-    %   Detailed explanation goes here
-    properties(GetAccess={?B})
-        graph;
-    end
-    
-    methods
-        function obj = A(obj)
-            %A Construct an instance of this class
-            %   Detailed explanation goes here
-        end
-    end
-
-    methods(Static = true)
-        function obj = set(obj,x)
-            A.graph = x;
-        end
-
-        function show()
-            disp(graph);
+[m,n] = size(width);
+edgeWidth = [];
+for i= 1:m
+    for j = i:n
+        if width(i,j)~=0
+            edgeWidth(end+1) = width(i,j);
         end
     end
 end
 
+           
