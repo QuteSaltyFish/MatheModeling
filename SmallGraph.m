@@ -22,16 +22,21 @@ classdef SmallGraph
             obj.State_map = zeros(x, y);
             obj.Move_map = zeros(x,y);
             obj.Person_map = cell(x, y);
-            for i = 1:obj.Col
-                obj = obj.spawn(ceil(obj.Row/2),i);
+            for i = 1:obj.Row-1
+                obj = obj.spawn(i, ceil(obj.Col/2));
             end
             % obj.show();
         end
         
         function obj = spawn(obj,x,y)
-            obj.Person_map(x,y) = {people(2,2,1,2)}; 
+            global allpeople;
+            global peoplecount;
+            peoplecount = peoplecount+1;
+            obj.Person_map{x,y} = people(x,y,obj.index,200);
             obj.State_map(x,y) = 1;
             obj.Move_map(x,y) = +inf;
+            allpeople{1,peoplecount} = obj.Person_map{x,y};
+            
         end
 
         function obj = loop(obj)
@@ -48,7 +53,6 @@ classdef SmallGraph
             for i = 1:obj.Row
                 for j = 1:obj.Col
                     if obj.State_map(i,j)==1 %if there is a node
-                        %%
                         %move the node
                         u = i;
                         v = j;
@@ -70,18 +74,25 @@ classdef SmallGraph
                             % colorbar();
                             % pause(0.2);
                         end
+                        cheak = sum(sum(Move_map_new~=State_map_new));
+%                         cheak2 = sum(Move_map_new~=Person_map_new);
+                        if cheak~=0
+                            fprintf("Wrong");
+                        end
+                        
+                        
 %                         [l,m] = size(sms);
 %                         for n = 1:m
 %                             sms{1,n}.show();
 %                         end
-                        disp(Move_map_new);
-                        %%
+%                         disp(Move_map_new);
                     end
                 end
             end
             obj.State_map = State_map_new;
             obj.Person_map = Person_map_new;
             obj.Move_map = Move_map_new;
+            
            
         end
 
