@@ -10,7 +10,7 @@ plot(x,y);
 xlabel('generation');
 ylabel('BestIndividual');
 subplot(2,1,2);
-for x = 1:generation_size;
+for x = 1:generation_size
     y(x) = BestFit(1,x);
 end
 x = 1:generation_size;
