@@ -76,13 +76,10 @@ global EndFlow;
 [~,y1] = size(ends);
 [~,y2] = size(HiddenEnds);
 for i = 1:(y1+y2)
-    EndFlow{i} = Door();
+    EndFlow{
 end
 while ~isempty(allpeople)
     loop = loop + 1;
-    for i = 1:(y1+y2)
-        EndFlow{i} = EndFlow{i}.Loop();
-    end
     %start to loop and show results
     [m,n] = size(allpeople);
     
@@ -138,7 +135,5 @@ while ~isempty(allpeople)
     risk = risk + sum(EndChoice);
 end
 loop
-for i = 1:(y1+y2)
-    EndFlow{i} = EndFlow{i}.accumulate();
-end
+
 % sm.Person_map{2,2}.velocity

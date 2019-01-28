@@ -36,7 +36,7 @@ function [loop, risk] = mainFunction(mag,x)
             HiddenEnds(end+1)=i;
         end
     end
-
+    
     global EndDensity;
 
     global EndChoice;
@@ -75,6 +75,10 @@ function [loop, risk] = mainFunction(mag,x)
     % EndDensity = OpenDoors(Th);
 
     EndDensity = InitEdgeDensity();
+    global EndFlow;
+    [~,y1] = size(ends);
+    [~,y2] = size(HiddenEnds);
+    EndFlow = zeros(1,y1+y2);
     while ~isempty(allpeople)
         %start to loop and show results
         [m,n] = size(allpeople);

@@ -5,6 +5,9 @@ function time =  CalNewPeople(ix,time, dir)
     global peoplecount;
     global edgepath;
     global distance;
+    global loop;
+    global EndFlow;
+    global AllEnds;
     [~,b] = size(path);
     GraphIndex = allpeople{1,ix}.position(1,3);
     obj = sms{1,GraphIndex};
@@ -23,6 +26,7 @@ function time =  CalNewPeople(ix,time, dir)
                 peoplecount = peoplecount - 1
                 distance(1,ix)=0;
                 obj.vol = obj.vol - 1;
+                EndFlow{1,(find(AllEnds==path(1),1))} = EndFlow{1,(find(AllEnds==path(1),1))}.Circle();
             end
 
         %不是终点
@@ -41,6 +45,7 @@ function time =  CalNewPeople(ix,time, dir)
                 peoplecount = peoplecount - 1
                 distance(1,ix)=0;
                 obj.vol = obj.vol - 1;
+                EndFlow{1,(find(AllEnds==path(2),1))} = EndFlow{1,(find(AllEnds==path(2),1))}.Circle();
             elseif nextedge.LeftNode == path(1)
                 if sum(nextedge.State_map(:,1)==0)~=0
                     if (sum(nextedge.Move_map(:,1)==-dir) < nextedge.Row-1)
@@ -103,6 +108,7 @@ function time =  CalNewPeople(ix,time, dir)
                 peoplecount = peoplecount - 1
                 distance(1,ix)=0;
                 obj.vol = obj.vol - 1;
+                EndFlow{1,(find(AllEnds==path(1),1))} = EndFlow{1,(find(AllEnds==path(1),1))}.Circle();
             end
         %不是终点
         elseif b >= 2
@@ -120,6 +126,7 @@ function time =  CalNewPeople(ix,time, dir)
                 peoplecount = peoplecount - 1
                 distance(1,ix)=0;
                 obj.vol = obj.vol - 1;
+                EndFlow{1,(find(AllEnds==path(2),1))} = EndFlow{1,(find(AllEnds==path(2),1))}.Circle();
             elseif nextedge.LeftNode == path(1)
                 if sum(nextedge.State_map(:,1)==0)~=0
                     if (sum(nextedge.Move_map(:,1)==dir) < nextedge.Row-1)
