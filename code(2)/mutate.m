@@ -13,7 +13,7 @@ for i = 1:x
     %}
     if(rand<pm)
         point = round(rand*y);
-        if point==0;
+        if point==0
             continue;
         else
             newpop(i,point) = 1-pop(i,point);

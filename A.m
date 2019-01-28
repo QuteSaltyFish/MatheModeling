@@ -1,4 +1,4 @@
 function output = A(x)
-    [Loop, Risk] = mainFunction(15,x);
-    output = Loop + 0.2 * Risk;
+    [Loop, Risk, mainflow, otherflow] = mainFunction(15,x);
+    output = Loop + 4 * otherflow/Risk + mainflow/Loop;
 end

@@ -1,4 +1,4 @@
-function [loop, risk] = mainFunction(mag,x)
+function [loop, risk, mainflow, otherflow] = mainFunction(mag,x)
     people_num_change = [];
     [a,b] = size(x);
     
@@ -43,7 +43,10 @@ function [loop, risk] = mainFunction(mag,x)
     EndChoice = zeros(size(HiddenEnds));
     [~,m] = size(HiddenEnds);
     Th = 1-4/(4+m)+0.05;
-
+    
+    global AllEnds;
+    AllEnds = [ends, HiddenEnds];
+    
     global CurrentEnd;
     tmp = EndChoice .* HiddenEnds;
     id = tmp==0;
@@ -78,8 +81,14 @@ function [loop, risk] = mainFunction(mag,x)
     global EndFlow;
     [~,y1] = size(ends);
     [~,y2] = size(HiddenEnds);
-    EndFlow = zeros(1,y1+y2);
+    for i = 1:(y1+y2)
+        EndFlow{i} = Door();
+    end
     while ~isempty(allpeople)
+        loop = loop + 1;
+        for i = 1:(y1+y2)
+            EndFlow{i} = EndFlow{i}.Loop();
+        end
         %start to loop and show results
         [m,n] = size(allpeople);
 
@@ -97,7 +106,6 @@ function [loop, risk] = mainFunction(mag,x)
                 fprintf("Wrong!");
             end
         end
-        loop = loop + 1;
         %delete null data
         id = cellfun('length',allpeople);
         allpeople(id==0) = [];
@@ -111,6 +119,14 @@ function [loop, risk] = mainFunction(mag,x)
         risk = risk + sum(EndChoice);
     end
     loop
-
-    % sm.Person_map{2,2}.velocity
+    mainflow=0;
+    otherflow=0;
+    for i = 1:(y1+y2)
+        EndFlow{i} = EndFlow{i}.accumulate();
+        if i<=y1
+            mainflow = mainflow + sum(EndFlow{i}.Vol);
+        else
+            otherflow = otherflow + sum(EndFlow{i}.Vol);
+        end
+    end
 end

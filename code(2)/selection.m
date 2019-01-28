@@ -1,7 +1,7 @@
 function newpop = selection(pop,fitvalue)
-[x,y] = size(pop);
+[x,~] = size(pop);
 popsize = x;
-newpop = zeros(popsize,101);
+newpop = zeros(popsize,73);
 
 temp_fitvalue = fitvalue;
 

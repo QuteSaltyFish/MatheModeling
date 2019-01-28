@@ -1,7 +1,7 @@
 
 clear;
 popsize = 10;
-chromlength = 101;
+chromlength = 73;
 generation_size = 80;
 firstbestfit = 0;
 pc = 0.8;
@@ -12,7 +12,7 @@ BestFit = zeros(1,generation_size);
 
 pop = initpop(popsize,chromlength);
 
-for i = 1:generation_size
+for i = 1:3
     i
     fitvalue = cal_fitvalue(pop);
     [bestindividual,bestfit] = best(pop,fitvalue);
