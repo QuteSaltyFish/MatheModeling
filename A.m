@@ -1,11 +1,4 @@
-[m,n] = size(width);
-edgeWidth = [];
-for i= 1:m
-    for j = i:n
-        if width(i,j)~=0
-            edgeWidth(end+1) = width(i,j);
-        end
-    end
+function output = A(x)
+    [Loop, Risk] = mainFunction(15,x);
+    output = Loop + 0.2 * Risk;
 end
-
-           

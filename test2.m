@@ -1,7 +1,8 @@
 clc, clear;
 
-
+people_num_change = [];
 %Create a unDirected Graph
+risk = 0;
 global c;
 global edgeWidth;
 load('data.mat');
@@ -20,7 +21,7 @@ loop = 0;
 dissum = [];
 global sms;
 sms = {};
-
+ 
 
 global ends;
 ends = [45,49,50,65];
@@ -75,9 +76,27 @@ while ~isempty(allpeople)
         time = allpeople{1,i}.velocity;
         [dir, path,distance(1,i),edgepath] = CalDir(i);
         while time>0
-            time = CalNewPeople(i,time,dir);    
+            if loop==0 && i==2518
+                fprintf("!");
+            end
+            time = CalNewPeople(i,time,dir); 
+            TestVol();
         end
         i;
+    end
+    [p,q] = size(sms);
+    for i = 1:q
+        sms{i} = sms{i}.Density_Loop();
+        if sms{i}.vol<0
+            fprintf("Wrong!");
+        end
+    end
+    [p,q] = size(sms);
+    for k = 1:q
+        sms{k} = sms{k}.Density_Loop();
+        if sms{k}.vol<0
+           fprintf("Wrong!");
+        end
     end
     loop = loop + 1;
     %delete null data
@@ -85,9 +104,18 @@ while ~isempty(allpeople)
     allpeople(id==0) = [];
     id = find(distance==0);
     distance(:,id)=[];
- 
-    [u,v] = size(distance);
     
+    %visualizaion matrix
+    
+    if mod(loop,10) == 0
+        figure('Name','My Figure1');
+        state_array = 255 * sms{92}.State_map;
+        imagesc(state_array);
+        colorbar();
+    %     title("The ", num2str(loop), "th loop");
+    end
+    people_num_change(end+1) = peoplecount;
+    [u,v] = size(distance);
     if v ~=peoplecount
         disp(1);
     end
@@ -95,8 +123,6 @@ while ~isempty(allpeople)
 %         disp(1);
 %     end
     dissum = [dissum,sum(distance)];
-    
-    plot(1:loop, dissum);
     %Display the data
 %     for i = 1:row
 %         sms{1,i} = sms{1,i}.loop();
@@ -105,10 +131,8 @@ while ~isempty(allpeople)
 
 %   open the hiddenDoor
 	EndDensity = OpenDoors(Th);
-
+    risk = risk + sum(EndChoice);
 end
 loop
-
-
 
 % sm.Person_map{2,2}.velocity

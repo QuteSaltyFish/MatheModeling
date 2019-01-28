@@ -27,11 +27,26 @@ function time =  CalNewPeople(ix,time, dir)
 
         %不是终点
         elseif b >= 2
-            nextedge = sms{edgepath(1)};
-            if nextedge.LeftNode == path(1)
+            if sum(edgepath~=0)==1
+                nextedge = sms{edgepath};
+            else
+                nextedge = sms{edgepath(find(edgepath~=obj.index,1))};
+            end
+            if nextedge.index == obj.index
+                time = 0;
+                obj.State_map(u,v) = 0;
+                obj.Move_map(u,v) = 0;
+%                 obj.Person_map{u,v} = [];
+                allpeople{1,ix} = [];
+                peoplecount = peoplecount - 1
+                distance(1,ix)=0;
+                obj.vol = obj.vol - 1;
+            elseif nextedge.LeftNode == path(1)
                 if sum(nextedge.State_map(:,1)==0)~=0
                     if (sum(nextedge.Move_map(:,1)==-dir) < nextedge.Row-1)
                         [m,~] = find(nextedge.State_map(:,1)==0,1);
+                        %test add vol
+                        test = obj.vol + nextedge.vol;
                         nextedge.State_map(m,1) = 1;
                         obj.State_map(u,v) = 0;
 %                         nextedge.Person_map{m,1} = obj.Person_map{u,v};
@@ -44,11 +59,15 @@ function time =  CalNewPeople(ix,time, dir)
                         allpeople{1,ix}.position(1,2) = 1;
                         allpeople{1,ix}.position(1,3) = nextedge.index;
                         sms{1,nextedge.index} = nextedge;
+                        if test~=(obj.vol + sms{1,nextedge.index}.vol)
+                            fprintf("Wrong!");
+                        end
                     end
                 end
             else
                 if sum(nextedge.State_map(:,nextedge.Col)==0)~=0
                     if (sum(nextedge.Move_map(:,nextedge.Col)==dir) < nextedge.Row-1)
+                        test = obj.vol + nextedge.vol;
                         [m,~] = find(nextedge.State_map(:,nextedge.Col)==0,1);
                         nextedge.State_map(m,nextedge.Col) = 1;
                         obj.State_map(u,v) = 0;
@@ -62,6 +81,9 @@ function time =  CalNewPeople(ix,time, dir)
                         allpeople{1,ix}.position(1,2) = nextedge.Col;
                         allpeople{1,ix}.position(1,3) = nextedge.index;
                         sms{1,nextedge.index} = nextedge;
+                        if test~=(obj.vol + sms{1,nextedge.index}.vol)
+                            fprintf("Wrong!");
+                        end
                     end
                 end
             end
@@ -84,10 +106,24 @@ function time =  CalNewPeople(ix,time, dir)
             end
         %不是终点
         elseif b >= 2
-            nextedge = sms{edgepath(1)};
-            if nextedge.LeftNode == path(1)
+            if sum(edgepath~=0)==1
+                nextedge = sms{edgepath};
+            else
+                nextedge = sms{edgepath(find(edgepath~=obj.index,1))};
+            end
+            if nextedge.index == obj.index
+                time = 0;
+                obj.State_map(u,v) = 0;
+                obj.Move_map(u,v) = 0;
+%                 obj.Person_map{u,v} = [];
+                allpeople{1,ix} = [];
+                peoplecount = peoplecount - 1
+                distance(1,ix)=0;
+                obj.vol = obj.vol - 1;
+            elseif nextedge.LeftNode == path(1)
                 if sum(nextedge.State_map(:,1)==0)~=0
                     if (sum(nextedge.Move_map(:,1)==dir) < nextedge.Row-1)
+                        test = obj.vol + nextedge.vol;
                         [m,~] = find(nextedge.State_map(:,1)==0,1);
                         nextedge.State_map(m,1) = 1;
                         obj.State_map(u,v) = 0;
@@ -101,11 +137,15 @@ function time =  CalNewPeople(ix,time, dir)
                         allpeople{1,ix}.position(1,2) = 1;
                         allpeople{1,ix}.position(1,3) = nextedge.index;
                         sms{1,nextedge.index} = nextedge;
+                        if test~=(obj.vol + sms{1,nextedge.index}.vol)
+                            fprintf("Wrong!");
+                        end
                     end
                 end
             else
                 if sum(nextedge.State_map(:,nextedge.Col)==0)~=0
                     if (sum(nextedge.Move_map(:,nextedge.Col)==-dir) < nextedge.Row-1)
+                        test = obj.vol + nextedge.vol;
                         [m,~] = find(nextedge.State_map(:,nextedge.Col)==0,1);
                         nextedge.State_map(m,nextedge.Col) = 1;
                         obj.State_map(u,v) = 0;
@@ -119,6 +159,9 @@ function time =  CalNewPeople(ix,time, dir)
                         allpeople{1,ix}.position(1,2) = nextedge.Col;
                         allpeople{1,ix}.position(1,3) = nextedge.index;
                         sms{1,nextedge.index} = nextedge;
+                        if test~=(obj.vol + sms{1,nextedge.index}.vol)
+                            fprintf("Wrong!");
+                        end
                     end
                 end
             end
